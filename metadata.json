@@ -1,0 +1,7 @@
+{
+  "name": "AuraGuard AI: Medication Adherence Agent",
+  "description": "A multimodal adherence agent that processes prescription and medication bottle data to calculate treatment duration and set timely refill alerts.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
