@@ -1,0 +1,21 @@
+{
+  "short_name": "Patient Nav",
+  "name": "AuraGuard AI: Medication Adherence Agent",
+  "description": "A multimodal adherence agent that processes prescription and medication bottle data to calculate treatment duration and set timely refill alerts.",
+  "icons": [
+    {
+      "src": "/logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1e3a8a",
+  "background_color": "#f1f5f9"
+}
