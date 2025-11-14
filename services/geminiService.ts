@@ -1,12 +1,12 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { ExtractedMedication, VerificationResult } from "../types";
 
-// FIX: Per coding guidelines, the API key must be read from process.env.API_KEY.
-// The original code used import.meta.env.VITE_GEMINI_API_KEY which caused a TypeScript error.
+// FIX: Switched from Vite's `import.meta.env.VITE_API_KEY` to `process.env.API_KEY`
+// to align with Gemini API guidelines and resolve the TypeScript error.
 const API_KEY = process.env.API_KEY;
 
 if (!API_KEY) {
-  // FIX: Updated error message to reflect the change to process.env.API_KEY.
+  // FIX: Updated error message to reflect the change to API_KEY.
   throw new Error("API_KEY is not configured. Check your environment variables.");
 }
 
