@@ -1,7 +1,16 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { ExtractedMedication, VerificationResult } from "../types";
 
+// FIX: Per coding guidelines, the API key must be read from process.env.API_KEY.
+// The original code used import.meta.env.VITE_GEMINI_API_KEY which caused a TypeScript error.
 const API_KEY = process.env.API_KEY;
+
+if (!API_KEY) {
+  // FIX: Updated error message to reflect the change to process.env.API_KEY.
+  throw new Error("API_KEY is not configured. Check your environment variables.");
+}
+
+const ai = new GoogleGenAI({ apiKey: API_KEY });
 
 const getExtractionPrompt = () => {
     return `
@@ -26,7 +35,6 @@ export const extractMedicationsFromPrescription = async (
   prescriptionPart: {mimeType: string, data: string}
   ): Promise<ExtractedMedication[]> => {
     
-    const ai = new GoogleGenAI({ apiKey: API_KEY });
     const prompt = getExtractionPrompt();
     
     const responseSchema = {
@@ -72,7 +80,6 @@ export const analyzeMedicationAdherence = async (
   photoPart: {mimeType: string, data: string}
 ): Promise<{daily_consumption: number}> => {
 
-  const ai = new GoogleGenAI({ apiKey: API_KEY });
   const prompt = `
 **SYSTEM INSTRUCTION: Medication Adherence Analyst**
 
@@ -126,7 +133,6 @@ export const verifyMedicationMatch = async (
     photoPart: {mimeType: string, data: string}
 ): Promise<VerificationResult> => {
 
-    const ai = new GoogleGenAI({ apiKey: API_KEY });
     const prompt = `
 **SYSTEM INSTRUCTION: Medication Verification Specialist**
 
