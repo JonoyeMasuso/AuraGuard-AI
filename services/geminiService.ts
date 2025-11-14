@@ -1,16 +1,20 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { ExtractedMedication, VerificationResult } from "../types";
 
-// FIX: Switched from Vite's `import.meta.env.VITE_API_KEY` to `process.env.API_KEY`
-// to align with Gemini API guidelines and resolve the TypeScript error.
 const API_KEY = process.env.API_KEY;
 
-if (!API_KEY) {
-  // FIX: Updated error message to reflect the change to API_KEY.
-  throw new Error("API_KEY is not configured. Check your environment variables.");
-}
+// Initialize the GoogleGenAI client. It will be null if the API key is missing.
+const ai = API_KEY ? new GoogleGenAI({ apiKey: API_KEY }) : null;
 
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+// A helper function to ensure the AI client is initialized before use.
+const ensureAiInitialized = () => {
+  if (!ai) {
+    // This error will be caught by the try/catch blocks in App.tsx
+    throw new Error("API_KEY is not configured. Please set it in your Vercel environment variables.");
+  }
+  return ai;
+};
+
 
 const getExtractionPrompt = () => {
     return `
@@ -35,6 +39,7 @@ export const extractMedicationsFromPrescription = async (
   prescriptionPart: {mimeType: string, data: string}
   ): Promise<ExtractedMedication[]> => {
     
+    const aiClient = ensureAiInitialized();
     const prompt = getExtractionPrompt();
     
     const responseSchema = {
@@ -59,7 +64,7 @@ export const extractMedicationsFromPrescription = async (
       }
     };
 
-    const response = await ai.models.generateContent({
+    const response = await aiClient.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: { parts: [
             { inlineData: prescriptionPart },
@@ -80,6 +85,7 @@ export const analyzeMedicationAdherence = async (
   photoPart: {mimeType: string, data: string}
 ): Promise<{daily_consumption: number}> => {
 
+  const aiClient = ensureAiInitialized();
   const prompt = `
 **SYSTEM INSTRUCTION: Medication Adherence Analyst**
 
@@ -113,7 +119,7 @@ Do not include any other text or markdown formatting.
     required: ["daily_consumption"]
   };
   
-  const response = await ai.models.generateContent({
+  const response = await aiClient.models.generateContent({
       model: 'gemini-2.5-flash',
       contents: { parts: [
           { inlineData: photoPart },
@@ -133,6 +139,7 @@ export const verifyMedicationMatch = async (
     photoPart: {mimeType: string, data: string}
 ): Promise<VerificationResult> => {
 
+    const aiClient = ensureAiInitialized();
     const prompt = `
 **SYSTEM INSTRUCTION: Medication Verification Specialist**
 
@@ -170,7 +177,7 @@ Do not include any other text or markdown formatting.
         required: ["match_status", "identified_product_name"]
     };
 
-    const response = await ai.models.generateContent({
+    const response = await aiClient.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: { parts: [
             { inlineData: photoPart },

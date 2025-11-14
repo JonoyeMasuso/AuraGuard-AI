@@ -4,12 +4,12 @@
   "description": "A multimodal adherence agent that processes prescription and medication bottle data to calculate treatment duration and set timely refill alerts.",
   "icons": [
     {
-      "src": "/logo192.png",
+      "src": "logo192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/logo512.png",
+      "src": "logo512.png",
       "type": "image/png",
       "sizes": "512x512"
     }

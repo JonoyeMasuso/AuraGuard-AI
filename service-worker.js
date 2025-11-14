@@ -2,11 +2,11 @@
 
 const CACHE_NAME = 'patient-navigator-cache-v1';
 const urlsToCache = [
-  '/',
-  '/index.html',
+  './',
+  'index.html',
   // Add other assets like icons, css, etc. that you want to cache
-  '/logo192.png',
-  '/logo512.png'
+  'logo192.png',
+  'logo512.png'
 ];
 
 // Install the service worker and cache the static assets
