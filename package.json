@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "homepage": "https://<YOUR_GITHUB_USERNAME>.github.io/AuraGuard-AI",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
